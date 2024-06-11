@@ -1,18 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../service/data.service';
 
 @Component({
   selector: 'app-standalone',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-  <h2 [ngStyle]="{color : color}">Liste des tâches à faire</h2>
-  <input type="text" [(ngModel)]="newTask">
-  <button (click)="addTask()">Ajouter</button>
-  <ul>
-    <li *ngFor="let task of tasks">{{task}}</li>
-  </ul>
+  <h2> {{salutation}}</h2>
   `,
   styles: [
     `
@@ -25,15 +21,14 @@ import { CommonModule } from '@angular/common';
       border:none;
       padding:5px
     } 
+
+    .style-liste {
+      font-size : 2rem;
+      color : gray
+    }
     `
   ]
 })
 export class StandaloneComponent {
-  color = 'blue'
-  tasks = ["Faire la lessive", "Faire les courses", "Nettoyer la maison"]
-  newTask = "Ajouter une tâche"
-
-  addTask() {
-    this.tasks.push(this.newTask)
-  }
+  readonly salutation = inject(DataService).getMessage()
 }
