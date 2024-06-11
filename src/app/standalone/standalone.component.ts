@@ -7,10 +7,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-  <h1 *ngIf="showMessage">Bonjour le monde</h1>
-  <button (click)="toggleMessage()">afficher/masquer le message</button>
-    <p>client {{dateVariable | date}} {{client | uppercase }} {{nombre | currency}}</p>
-    <input [(ngModel)]="client">
+  <h2 [ngStyle]="{color : color}">Liste des tâches à faire</h2>
+  <input type="text" [(ngModel)]="newTask">
+  <button (click)="addTask()">Ajouter</button>
+  <ul>
+    <li *ngFor="let task of tasks">{{task}}</li>
+  </ul>
   `,
   styles: [
     `
@@ -18,40 +20,20 @@ import { CommonModule } from '@angular/common';
       color: green;
     }
     button {
-      padding : 1rem;
-      background-color : marrow;
+      background-color : skyblue;
       font-weight : bold;
-
+      border:none;
+      padding:5px
     } 
     `
   ]
 })
 export class StandaloneComponent {
-  nombre !: number;
-  client = "Maria"
+  color = 'blue'
+  tasks = ["Faire la lessive", "Faire les courses", "Nettoyer la maison"]
+  newTask = "Ajouter une tâche"
 
-  dateVariable = new Date()
-
-  ngOnInit(): void {
-
-    this.nombre = 100
-
-
-  }
-
-  incrementer() {
-    this.nombre += 1
-  }
-
-  decrementer() {
-    if (this.nombre > 0) {
-      this.nombre -= 1
-    }
-  }
-
-  showMessage = true
-
-  toggleMessage() {
-    this.showMessage = !this.showMessage
+  addTask() {
+    this.tasks.push(this.newTask)
   }
 }
