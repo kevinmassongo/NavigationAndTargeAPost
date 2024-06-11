@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-standalone',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   template: `
-    <p>
-      count {{nombre}}
-    </p>
-    <img [src]="logoAngular" alt="logo angular">
-    <button [disabled]="desactiverButton">Enregistrer</button>
-    <button (click)="incrementer()">Incrementer</button>
-    <button (click)="decrementer()">Decrementer</button>
+  <h1 *ngIf="showMessage">Bonjour le monde</h1>
+  <button (click)="toggleMessage()">afficher/masquer le message</button>
+    <p>client {{dateVariable | date}} {{client | uppercase }} {{nombre | currency}}</p>
+    <input [(ngModel)]="client">
   `,
   styles: [
     `
@@ -28,16 +27,15 @@ import { Component } from '@angular/core';
   ]
 })
 export class StandaloneComponent {
-  desactiverButton = true
   nombre !: number;
+  client = "Maria"
+
+  dateVariable = new Date()
 
   ngOnInit(): void {
 
-    this.nombre = 1
+    this.nombre = 100
 
-    setTimeout(() => {
-      this.desactiverButton = false
-    }, 5000)
 
   }
 
@@ -51,5 +49,9 @@ export class StandaloneComponent {
     }
   }
 
-  logoAngular = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVUcQofbdW28AoTCjLFzojT7sSZQVsEurWQA&s"
+  showMessage = true
+
+  toggleMessage() {
+    this.showMessage = !this.showMessage
+  }
 }
