@@ -1,19 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { StandaloneComponent } from './standalone/standalone.component';
-import { DataService } from './service/data.service';
-import { ParentComponent } from './shareData/parent/parent.component';
-import { EnfantComponent } from './shareData/enfant/enfant.component';
+import { Component } from '@angular/core';
+import { FormulaireComponent } from './components/formulaire/formulaire.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, StandaloneComponent, ParentComponent, EnfantComponent],
+  imports: [FormulaireComponent],
   template: `
-  <p>Apprendre angular pour les débutants {{salutation}}</p>
-  <app-standalone/>
-  <app-parent/>
-  <app-enfant/>
+  <p>Apprendre angular pour les débutant</p>
+  <app-formulaire />
   `,
   styles: [`
     p {
@@ -24,5 +18,4 @@ import { EnfantComponent } from './shareData/enfant/enfant.component';
 })
 export class AppComponent {
   title = 'ApprendreAngular';
-  readonly salutation = inject(DataService).getMessage()
 }
