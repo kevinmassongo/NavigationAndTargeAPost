@@ -18,7 +18,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     }
     `]
 })
-export class FormulaireComponent {
+export default class FormulaireComponent {
   nom = new FormControl('')
 
   onSubmit() {

@@ -14,6 +14,10 @@ export class PostService {
     return this.http.get<Post[]>(`${this.API}`)
   }
 
+  getPost(postId : number) {
+    return this.http.get<Post>(`${this.API}/${postId}`)
+  }
+
   putPost(postId: number, post: Post) {
     return this.http.put<Post>(`${this.API}/${postId}`, post)
   }

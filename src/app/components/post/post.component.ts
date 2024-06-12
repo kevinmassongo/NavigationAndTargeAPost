@@ -2,8 +2,9 @@ import { Component, inject } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../services/post.model';
-import { EditPostComponent } from '../editPost/edit-post.component';
 import { Observable } from 'rxjs';
+import EditPostComponent from '../editPost/edit-post.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post',
@@ -20,7 +21,7 @@ import { Observable } from 'rxjs';
         <span>Identifiant du post : {{post.id}} - posté par {{post.userId}}</span>
         {{deleteResult | async}}
         <div class="actions" align="end">
-          <button class="modifier" (click)="toggleDialog(post)">Editer</button>
+          <button class="modifier" (click)="goToEdit(post)">Editer</button>
           <button class="supprimer" (click)="onDelete(post.id)">Supprimer</button>
         </div>
       </div>
@@ -57,17 +58,18 @@ import { Observable } from 'rxjs';
     }
     `]
 })
-export class PostComponent {
+export default class PostComponent {
   showDialog = false;
   post !: Post;
   deleteResult !: Observable<Post>
 
   private ps = inject(PostService);
   readonly posts = this.ps.getPosts();
+  private router = inject(Router)
 
-  toggleDialog(post: Post) {
-    this.showDialog = !this.showDialog;
-    this.post = post;
+  goToEdit(post: Post) {
+    // this.router.navigate(['/edit', '1234'])
+    this.router.navigateByUrl(`/edit/${post.id}`)
   }
 
   onDelete(postId: number) {

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PostService } from '../../services/post.service';
 import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-post',
@@ -11,11 +12,11 @@ import { Observable } from 'rxjs';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()">
-      <h2>Ajouter ce poste</h2>
+      <h2>Modification ce poste</h2>
       <input type="text" placeholder="Titre" formControlName="title">
       <input type="text" placeholder="Description" formControlName="body">
       {{ editResult | async}}
-      <button type="submit">Ajouter</button>
+      <button type="submit">Modifier</button>
     </form>
   `,
   styles: [`
@@ -41,10 +42,13 @@ import { Observable } from 'rxjs';
 
     `]
 })
-export class EditPostComponent {
+export default class EditPostComponent {
   @Input() post !: Post;
   private ps = inject(PostService);
   editResult !:  Observable<Post>
+
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
   
   editPostForm = new FormGroup ({
     title : new FormControl(''),
@@ -52,18 +56,23 @@ export class EditPostComponent {
   })
 
   ngOnInit() : void {
-    this.editPostForm.patchValue(this.post)
+    const postId = this.route.snapshot.paramMap.get('id');
+    this.ps.getPost(Number(postId)).subscribe((post) => {
+      this.post = post  
+      this.editPostForm.patchValue(post)
+    })    
   }
   
   onSubmit() {
     const post : Post = {
-      userId : 893,
-      id : 73,
+      userId : this.post.userId,
+      id : this.post.id,
       title : this.editPostForm.value.title!,
       body : this.editPostForm.value.body!
     }
 
-    this.editResult = this.ps.postPost(post)
-    location.reload()
+    this.ps.putPost(post.id, post).subscribe(()=> {
+      this.router.navigate(['accueil'])
+    })
   }
 }
