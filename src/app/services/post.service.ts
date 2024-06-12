@@ -14,8 +14,16 @@ export class PostService {
     return this.http.get<Post[]>(`${this.API}`)
   }
 
-  putPost ( postId : number, post : Post) {
+  putPost(postId: number, post: Post) {
     return this.http.put<Post>(`${this.API}/${postId}`, post)
   }
-  
+
+  deletePost(postId: number) {
+    return this.http.delete<Post>(`${this.API}/${postId}`)
+  }
+
+  postPost(post: Post) {
+    return this.http.post<Post>(`${this.API}`, post)
+  }
+
 }

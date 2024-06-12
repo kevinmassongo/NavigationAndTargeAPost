@@ -11,11 +11,11 @@ import { Observable } from 'rxjs';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()">
-      <h2>Modifier ce poste</h2>
+      <h2>Ajouter ce poste</h2>
       <input type="text" placeholder="Titre" formControlName="title">
       <input type="text" placeholder="Description" formControlName="body">
       {{ editResult | async}}
-      <button type="submit">Modifier</button>
+      <button type="submit">Ajouter</button>
     </form>
   `,
   styles: [`
@@ -57,13 +57,13 @@ export class EditPostComponent {
   
   onSubmit() {
     const post : Post = {
-      userId : this.post.userId,
-      id : this.post.id,
+      userId : 893,
+      id : 73,
       title : this.editPostForm.value.title!,
       body : this.editPostForm.value.body!
     }
 
-    this.editResult = this.ps.putPost(post.id , post)
+    this.editResult = this.ps.postPost(post)
     location.reload()
   }
 }

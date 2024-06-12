@@ -3,6 +3,7 @@ import { PostService } from '../../services/post.service';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../services/post.model';
 import { EditPostComponent } from '../editPost/edit-post.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-post',
@@ -17,9 +18,10 @@ import { EditPostComponent } from '../editPost/edit-post.component';
         <h3>{{post.title}}</h3>
         <h4>{{post.body}}</h4>
         <span>Identifiant du post : {{post.id}} - posté par {{post.userId}}</span>
+        {{deleteResult | async}}
         <div class="actions" align="end">
           <button class="modifier" (click)="toggleDialog(post)">Editer</button>
-          <button class="supprimer">Supprimer</button>
+          <button class="supprimer" (click)="onDelete(post.id)">Supprimer</button>
         </div>
       </div>
     </section>
@@ -58,6 +60,7 @@ import { EditPostComponent } from '../editPost/edit-post.component';
 export class PostComponent {
   showDialog = false;
   post !: Post;
+  deleteResult !: Observable<Post>
 
   private ps = inject(PostService);
   readonly posts = this.ps.getPosts();
@@ -65,5 +68,10 @@ export class PostComponent {
   toggleDialog(post: Post) {
     this.showDialog = !this.showDialog;
     this.post = post;
+  }
+
+  onDelete(postId: number) {
+    this.deleteResult = this.ps.deletePost(postId);
+    location.reload()
   }
 }
